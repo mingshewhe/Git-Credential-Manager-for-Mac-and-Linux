@@ -64,6 +64,7 @@ public class Program
 {
     private static final String ConfigPrefix = "credential";
     private static final String SecretsNamespace = "git";
+    private static final String SecretsPrefix = "devops:";
     private static final String ProgramFolderName = "git-credential-manager";
     private static final VsoTokenScope VsoCredentialScope = VsoTokenScope.CodeWrite;
     private static final String AbortAuthenticationProcessResponse = "quit=true";
@@ -841,7 +842,7 @@ public class Program
         }
         else if (Provider.isWindows(osName))
         {
-            result.add("It looks like you are running on Windows, please consider using the Git Credential Manager for Windows: https://github.com/Microsoft/Git-Credential-Manager-for-Windows");
+            // result.add("It looks like you are running on Windows, please consider using the Git Credential Manager for Windows: https://github.com/Microsoft/Git-Credential-Manager-for-Windows");
         }
         else
         {
@@ -892,17 +893,7 @@ public class Program
 
         Trace.writeLine("Program::createAuthentication");
 
-        final String osName = System.getProperty("os.name");
-        final Secret.IUriNameConversion iUriNameConversion =
-                Provider.isMac(osName)
-                /*
-                 * Adds a prefix to the target name to avoid a collision
-                 * with the built-in git-credential-osxkeychain.
-                 * This is because the built-in helper will not validate the credentials first,
-                 * leading to a poor user experience if the token is no longer valid.
-                 */
-                ? new Secret.PrefixedUriNameConversion("gcm4ml:")
-                : Secret.DefaultUriNameConversion;
+        final Secret.IUriNameConversion iUriNameConversion = new Secret.PrefixedUriNameConversion(SecretsPrefix);
         final SecretStore secrets = new SecretStore(secureStore, SecretsNamespace, null, null, iUriNameConversion);
         final AtomicReference<IAuthentication> authorityRef = new AtomicReference<IAuthentication>();
         final ITokenStore adaRefreshTokenStore = null;

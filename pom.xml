@@ -66,6 +66,9 @@ Licensed under the MIT license. See License.txt in the project root. -->
     <project.license.name>MIT License</project.license.name>
     <project.license.url>https://opensource.org/licenses/mit-license.php</project.license.url>
     <project.scm.id>github-server</project.scm.id>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <build>
@@ -147,8 +150,8 @@ Licensed under the MIT license. See License.txt in the project root. -->
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
         <configuration>
-          <source>7</source>
-          <target>7</target>
+          <source>8</source>
+          <target>8</target>
         </configuration>
       </plugin>
       <plugin>
@@ -531,7 +534,12 @@ Licensed under the MIT license. See License.txt in the project root. -->
     <dependency>
       <groupId>com.microsoft.alm</groupId>
       <artifactId>auth-secure-storage</artifactId>
-      <version>0.6.0</version>
+      <version>0.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>name.neuhalfen.projects.crypto.bouncycastle.openpgp</groupId>
+      <artifactId>bouncy-gpg</artifactId>
+      <version>2.3.0</version>
     </dependency>
 
     <dependency>

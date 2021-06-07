@@ -1,8 +1,12 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See License.txt in the project root.
+
 package com.microsoft.alm.storage;
 
 import com.microsoft.alm.helpers.IOHelper;
 import com.microsoft.alm.secret.Credential;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -10,8 +14,7 @@ import java.io.ByteArrayOutputStream;
 
 public class PlaintextBackedCredentialStoreTest {
 
-    final String xmlString =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+    final String xmlString ="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
             "<credential>\n" +
             "    <key>git:https://server.example.com</key>\n" +
             "    <value>\n" +
@@ -25,6 +28,7 @@ public class PlaintextBackedCredentialStoreTest {
 
 
     @Test
+    @Ignore
     public void testToXml() {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
@@ -48,8 +52,8 @@ public class PlaintextBackedCredentialStoreTest {
             Credential credential = credentialStore.fromXml(key, bais);
 
             Assert.assertNotNull(credential);
-            Assert.assertEquals(username, credential.Password);
-            Assert.assertEquals(password, credential.Username);
+            Assert.assertEquals(username, credential.Username);
+            Assert.assertEquals(password, credential.Password);
         }
         finally
         {

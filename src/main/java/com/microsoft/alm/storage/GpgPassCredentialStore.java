@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See License.txt in the project root.
+
 package com.microsoft.alm.storage;
 
 import com.microsoft.alm.helpers.IOHelper;
@@ -12,7 +15,7 @@ import java.io.*;
 public class GpgPassCredentialStore extends PlaintextBackedCredentialStore {
     private static final Logger logger = LoggerFactory.getLogger(GpgPassCredentialStore.class);
     protected String STORE_ROOT = ".password-store";
-    private static final String credentialFileName = "git-credential-devops.gpg";
+    private static final String credentialFileName = "git-credential-landun.gpg";
 
     @Override
     protected void toXml(OutputStream destination, String key, Credential secret) {
@@ -33,10 +36,14 @@ public class GpgPassCredentialStore extends PlaintextBackedCredentialStore {
 
     @Override
     protected Credential fromXml(String key, InputStream source) {
-        try (InputStream plainInputStream = GpgUtil.decrypt(source)) {
+        InputStream plainInputStream = null;
+        try {
+            plainInputStream = GpgUtil.decrypt(source);
             return super.fromXml(key, plainInputStream);
         } catch (Exception e) {
             logger.info("Warning: unable to deserialize credentialFile. Is the file corrupted?", e);
+        } finally {
+            IOHelper.closeQuietly(plainInputStream);
         }
         return null;
     }

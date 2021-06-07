@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See License.txt in the project root.
+
 package com.microsoft.alm.storage.util;
 
 import com.microsoft.alm.constant.Constants;

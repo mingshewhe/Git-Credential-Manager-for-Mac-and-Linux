@@ -3,31 +3,8 @@
 
 package com.microsoft.alm.gitcredentialmanager;
 
-import com.microsoft.alm.authentication.BaseVsoAuthentication;
-import com.microsoft.alm.authentication.BasicAuthentication;
-import com.microsoft.alm.authentication.Configuration;
-import com.microsoft.alm.authentication.DeviceFlowResponse;
-import com.microsoft.alm.authentication.IAuthentication;
-import com.microsoft.alm.authentication.ISecureStore;
-import com.microsoft.alm.authentication.ITokenStore;
-import com.microsoft.alm.authentication.IVsoAadAuthentication;
-import com.microsoft.alm.authentication.IVsoMsaAuthentication;
-import com.microsoft.alm.authentication.SecretStore;
-import com.microsoft.alm.authentication.SecretStoreAdapter;
-import com.microsoft.alm.authentication.VsoAadAuthentication;
-import com.microsoft.alm.authentication.VsoMsaAuthentication;
-import com.microsoft.alm.authentication.Where;
-import com.microsoft.alm.helpers.Action;
-import com.microsoft.alm.helpers.Debug;
-import com.microsoft.alm.helpers.Environment;
-import com.microsoft.alm.helpers.Func;
-import com.microsoft.alm.helpers.Guid;
-import com.microsoft.alm.helpers.IOHelper;
-import com.microsoft.alm.helpers.NotImplementedException;
-import com.microsoft.alm.helpers.Path;
-import com.microsoft.alm.helpers.StringHelper;
-import com.microsoft.alm.helpers.Trace;
-import com.microsoft.alm.helpers.UriHelper;
+import com.microsoft.alm.authentication.*;
+import com.microsoft.alm.helpers.*;
 import com.microsoft.alm.oauth2.useragent.Provider;
 import com.microsoft.alm.oauth2.useragent.Version;
 import com.microsoft.alm.oauth2.useragent.subprocess.DefaultProcessFactory;
@@ -40,23 +17,11 @@ import com.microsoft.alm.secret.Token;
 import com.microsoft.alm.secret.VsoTokenScope;
 import com.microsoft.alm.storage.StorageProvider;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -64,7 +29,6 @@ public class Program
 {
     private static final String ConfigPrefix = "credential";
     private static final String SecretsNamespace = "git";
-    private static final String SecretsPrefix = "devops:";
     private static final String ProgramFolderName = "git-credential-manager";
     private static final VsoTokenScope VsoCredentialScope = VsoTokenScope.CodeWrite;
     private static final String AbortAuthenticationProcessResponse = "quit=true";
@@ -893,7 +857,7 @@ public class Program
 
         Trace.writeLine("Program::createAuthentication");
 
-        final Secret.IUriNameConversion iUriNameConversion = new Secret.PrefixedUriNameConversion(SecretsPrefix);
+        final Secret.IUriNameConversion iUriNameConversion = new LandunUriNameConversion();
         final SecretStore secrets = new SecretStore(secureStore, SecretsNamespace, null, null, iUriNameConversion);
         final AtomicReference<IAuthentication> authorityRef = new AtomicReference<IAuthentication>();
         final ITokenStore adaRefreshTokenStore = null;

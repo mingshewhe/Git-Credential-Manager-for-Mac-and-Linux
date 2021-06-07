@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See License.txt in the project root.
+
 package com.microsoft.alm.storage.util;
 
 import com.microsoft.alm.helpers.Environment;
+import com.microsoft.alm.helpers.StringHelper;
 
 import java.io.File;
 
@@ -12,7 +16,7 @@ public class FilePathUtil {
                 Environment.SpecialFolder.UserProfile);
     }
 
-    public static File findFirstValidFolder(final Environment.SpecialFolder... candidates) {
+    private static File findFirstValidFolder(final Environment.SpecialFolder... candidates) {
         for (final Environment.SpecialFolder candidate : candidates) {
             final String path = Environment.getFolderPath(candidate);
             if (path == null)
@@ -27,6 +31,6 @@ public class FilePathUtil {
     }
 
     public static String keyToPathName(String key) {
-        return key.replaceAll("//", "").replaceAll(":", File.separator);
+        return StringHelper.join(File.separator, key.replaceAll("//", "").split(":"));
     }
 }

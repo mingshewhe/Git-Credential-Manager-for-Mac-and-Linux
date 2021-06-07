@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See License.txt in the project root.
+
 package com.microsoft.alm.storage.util;
 
 import org.junit.Assert;
@@ -21,7 +24,6 @@ public class DHUtilTest {
         // publicKey: MEcwLQYJKoZIhvcNAQMBMCACExZWAhV0cUBBckkhWWg0c0IIBYcCBRI0VniQAgIAgAMWAAITC9wdlrZZPAArIr15qi5PaXjI6w==
         // privateKey: MEcCAQAwLQYJKoZIhvcNAQMBMCACExZWAhV0cUBBckkhWWg0c0IIBYcCBRI0VniQAgIAgAQTAhEAvS9+c9BhV1wV28BI0IOotA==
         DHKeyPair clientDhKeyPair = DHUtil.initKey();
-        Base64.Decoder decoder = Base64.getDecoder();
         DHKeyPair serverDhKeyPair = DHUtil.initKey(clientDhKeyPair.getPublicKey());
         byte[] encryptData = DHUtil.encrypt(plainText.getBytes(), clientDhKeyPair.getPublicKey(), serverDhKeyPair.getPrivateKey());
         byte[] decryptData = DHUtil.decrypt(encryptData, serverDhKeyPair.getPublicKey(), clientDhKeyPair.getPrivateKey());

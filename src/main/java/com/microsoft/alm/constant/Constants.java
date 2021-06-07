@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See License.txt in the project root.
+
 package com.microsoft.alm.constant;
 
 public interface Constants {
@@ -100,4 +103,5 @@ public interface Constants {
     String GIT_CREDENTIAL_PUBLIC_KEY = "GIT_CREDENTIAL_PUBLIC_KEY";
     String GIT_CREDENTIAL_PASSPHRASE = "GIT_CREDENTIAL_PASSPHRASE";
     String DEVOPS_VM_SEQ_ID = "DEVOPS_VM_SEQ_ID";
+    String BK_CI_PIPELINE_ID = "BK_CI_PIPELINE_ID";
 }

@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See License.txt in the project root.
+
 package com.microsoft.alm.storage;
 
+import com.microsoft.alm.helpers.IOHelper;
 import com.microsoft.alm.helpers.XmlHelper;
 import com.microsoft.alm.secret.Credential;
 import com.microsoft.alm.storage.util.FilePathUtil;
@@ -22,7 +26,7 @@ public class PlaintextBackedCredentialStore implements SecretStore<Credential> {
 
     private static final Logger logger = LoggerFactory.getLogger(PlaintextBackedCredentialStore.class);
     private static final String STORE_ROOT = ".store";
-    private static final String credentialFileName = "git-credential-devops.xml";
+    private static final String credentialFileName = "git-credential-landun.xml";
 
 
     @Override
@@ -31,12 +35,16 @@ public class PlaintextBackedCredentialStore implements SecretStore<Credential> {
         if (!credentialFile.exists()) {
             return null;
         }
-        try (FileInputStream fis = new FileInputStream(credentialFile)) {
-            return fromXml(key, fis);
+        InputStream is = null;
+        try {
+            is = new FileInputStream(credentialFile);
+            return fromXml(key, is);
         } catch (FileNotFoundException e) {
             logger.info("credentialFile {} did not exist", credentialFile.getAbsolutePath());
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.info("credentialFile {} read error", credentialFile.getAbsolutePath());
+        } finally {
+            IOHelper.closeQuietly(is);
         }
         return null;
     }
@@ -55,13 +63,17 @@ public class PlaintextBackedCredentialStore implements SecretStore<Credential> {
             parentFile.mkdirs();
         }
 
-        try (FileOutputStream fos = new FileOutputStream(credentialFile)) {
+        FileOutputStream fos = null;
+        try  {
+            fos = new FileOutputStream(credentialFile);
             toXml(fos, key, secret);
             return true;
         } catch (FileNotFoundException e) {
             logger.info("credentialFile {} did not exist", credentialFile.getAbsolutePath());
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.info("credentialFile {} write error", credentialFile.getAbsolutePath());
+        } finally {
+            IOHelper.closeQuietly(fos);
         }
         return false;
     }
